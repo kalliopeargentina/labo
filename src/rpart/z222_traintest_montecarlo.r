@@ -5,7 +5,8 @@ require("data.table")
 require("rpart")
 require("parallel")
 
-ksemillas  <- c(102191, 200177, 410551, 552581, 892237 ) #reemplazar por las propias semillas
+#ksemillas  <- c(771349, 771359, 771389, 771401, 771403,900007, 900019, 900037, 900061, 900089, 900091, 900103, 900121, 900139, 900143, 900149, 900157, 900161, 900169, 900187) #reemplazar por las propias semillas
+ksemillas  <- c(771349, 771359, 771389, 771401, 771403) #reemplazar por las propias semillas
 
 #------------------------------------------------------------------------------
 #particionar agrega una columna llamada fold a un dataset que consiste en una particion estratificada segun agrupa
@@ -22,6 +23,9 @@ particionar  <- function( data,  division, agrupa="",  campo="fold", start=1, se
 }
 #------------------------------------------------------------------------------
 
+#Algunos parametros más a considerar
+cost_mat <- matrix(c(0, 2, 1, 2, 0, 2, 1, 2, 0), nrow = 3, ncol = 3)
+#------------------------------------------------------------------------------
 ArbolEstimarGanancia  <- function( semilla, param_basicos )
 {
   #particiono estratificadamente el dataset
@@ -31,7 +35,13 @@ ArbolEstimarGanancia  <- function( semilla, param_basicos )
   modelo  <- rpart("clase_ternaria ~ .",     #quiero predecir clase_ternaria a partir del resto
                    data= dataset[ fold==1],  #fold==1  es training,  el 70% de los datos
                    xval= 0,
-                   control= param_basicos )  #aqui van los parametros del arbol
+                   control= param_basicos,
+                   parms = list(split = "information"
+                   #,loss=cost_mat
+                   )
+                   )  #aqui van los parametros del arbol
+#best <- modelo$cptable[which.min(modelo$cptable[,"rel error"]),"CP"]
+#modelo <- prune(modelo, cp=best)
 
   #aplico el modelo a los datos de testing
   prediccion  <- predict( modelo,   #el modelo que genere recien
@@ -61,20 +71,23 @@ ArbolEstimarGanancia  <- function( semilla, param_basicos )
 #------------------------------------------------------------------------------
 
 #Aqui se debe poner la carpeta de la computadora local
-setwd("X:\\gdrive\\austral2023v\\")   #Establezco el Working Directory
-#cargo los datos
+
+setwd("C:\\Users\\marco\\Dropbox\\Austral\\labo12023")   #Establezco el Working Directory
+
 
 #cargo los datos
 dataset  <- fread("./datasets/dataset_pequeno.csv")
 
 #trabajo solo con los datos con clase, es decir 202107
 dataset  <- dataset[ clase_ternaria!= "" ]
-
+#Binarizando la clase
+#dataset <- dataset[, clase_ternaria := ifelse(clase_ternaria != "BAJA+2", "NO_ENVIAR", clase_ternaria)]
 
 param_basicos  <- list( "cp"=          -1,  #complejidad minima
-                        "minsplit"=   900,  #minima cantidad de registros en un nodo para hacer el split
-                        "minbucket"=  440,  #minima cantidad de registros en una hoja
-                        "maxdepth"=     5 ) #profundidad máxima del arbol
+                        "minsplit"=   600,  #minima cantidad de registros en un nodo para hacer el split
+                        "minbucket"=  200,  #minima cantidad de registros en una hoja
+                        "maxdepth"=     6 
+                        ) #profundidad máxima del arbol
 
 #Un solo llamado, con la semilla 17
 ArbolEstimarGanancia( 17, param_basicos )   
@@ -88,7 +101,7 @@ salidas  <- mcmapply( ArbolEstimarGanancia,
                       mc.cores= 1 )  #se puede subir a 5 si posee Linux o Mac OS
 
 #muestro la lista de las salidas en testing para la particion realizada con cada semilla
-salidas
+#salidas
 
 #paso la lista a vector
 tb_salida  <- rbindlist(salidas)

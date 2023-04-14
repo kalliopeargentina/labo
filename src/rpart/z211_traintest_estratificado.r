@@ -21,7 +21,7 @@ particionar  <- function( data,  division, agrupa="",  campo="fold", start=1, se
 #------------------------------------------------------------------------------
 
 #Aqui se debe poner la carpeta de la computadora local
-setwd("X:\\gdrive\\austral2023v\\")   #Establezco el Working Directory
+setwd("C:\\Users\\marco\\Dropbox\\Austral\\labo12023")  #Establezco el Working Directory
 
 #cargo los datos
 dataset  <- fread("./datasets/dataset_pequeno.csv")
@@ -31,19 +31,20 @@ dataset  <- dataset[ clase_ternaria!= "" ]
 
 #particiono estratificadamente el dataset
 #Cambiar por la primer semilla de cada uno !
-particionar( dataset, division=c(7,3), agrupa="clase_ternaria", seed= 102191 )  #Cambiar por la primer semilla de cada uno !
+particionar( dataset, division=c(7,3), agrupa="clase_ternaria", seed= 771403 )  #Cambiar por la primer semilla de cada uno !
 
 
 param_basicos  <- list( "cp"=         -1,  #complejidad minima
-                        "minsplit"=  400,  #minima cantidad de registros en un nodo para hacer el split
-                        "minbucket"=  10,  #minima cantidad de registros en una hoja
-                        "maxdepth"=    8 ) #profundidad máxima del arbol
+                        "minsplit"=  600,  #minima cantidad de registros en un nodo para hacer el split
+                        "minbucket"=  200,  #minima cantidad de registros en una hoja
+                        "maxdepth"=    6) #profundidad máxima del arbol
 
 #genero el modelo
 modelo  <- rpart("clase_ternaria ~ .",     #quiero predecir clase_ternaria a partir del resto
                  data= dataset[ fold==1],  #fold==1  es training,  el 70% de los datos
                  xval= 0,
-                 control=  param_basicos )  #aqui van los parametros
+                 control=  param_basicos,
+                 parms = list(split = "information"))  #aqui van los parametros
 
 
 #aplico el modelo a los datos de testing
@@ -72,9 +73,7 @@ aciertos   <- dataset[ fold==2 & prob_baja2 > 0.025 & clase_ternaria =="BAJA+2",
 
 cat( "Testing total: ",  dataset[ fold==2, .N ], "\n" )
 cat( "Testing BAJA+2: ", dataset[ fold==2 & clase_ternaria =="BAJA+2", .N ], "\n" )
-
 cat( "Estimulos: ", estimulos, "\n" )
 cat( "Aciertos (BAJA+2): ",  aciertos,  "\n" )
-
 cat( "Ganancia en testing (normalizada): ", ganancia_test_normalizada, "\n" )
 

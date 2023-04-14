@@ -9,7 +9,7 @@ require("data.table")
 require("rpart")
 require("parallel")
 
-ksemillas  <- c( 102191, 200177, 410551, 552581, 892237 ) #reemplazar por las propias semillas
+ksemillas  <- c( 771349, 771359, 771389, 771401, 771403 ) #reemplazar por las propias semillas
 
 #------------------------------------------------------------------------------
 #particionar agrega una columna llamada fold a un dataset que consiste en una particion estratificada segun agrupa
@@ -35,7 +35,9 @@ ArbolEstimarGanancia  <- function( semilla, param_basicos )
   modelo  <- rpart("clase_ternaria ~ .",     #quiero predecir clase_ternaria a partir del resto
                    data= dataset[ fold==1],  #fold==1  es training,  el 70% de los datos
                    xval= 0,
-                   control= param_basicos )  #aqui van los parametros del arbol
+                   control= param_basicos,
+                   parms = list(split = "information")
+                  )  #aqui van los parametros del arbol
 
   #aplico el modelo a los datos de testing
   prediccion  <- predict( modelo,   #el modelo que genere recien
@@ -74,7 +76,7 @@ ArbolesMontecarlo  <- function( semillas,  param_basicos )
 #------------------------------------------------------------------------------
 
 #Aqui se debe poner la carpeta de la computadora local
-setwd("X:\\gdrive\\austral2023v\\")   #Establezco el Working Directory
+setwd("C:\\Users\\marco\\Dropbox\\Austral\\labo12023")   #Establezco el Working Directory
 #cargo los datos
 
 #cargo los datos
@@ -86,18 +88,18 @@ dataset  <- dataset[ clase_ternaria!= "" ]
 
 paramA  <- list( "cp"=         -1,  #complejidad minima
                  "minsplit"=  300,  #minima cantidad de registros en un nodo para hacer el split
-                 "minbucket"= 150,  #minima cantidad de registros en una hoja
-                 "maxdepth"=    6 ) #profundidad máxima del arbol
+                 "minbucket"= 100,  #minima cantidad de registros en una hoja
+                 "maxdepth"=    5 ) #profundidad máxima del arbol
 
-paramB  <- list( "cp"=          0,  #complejidad minima
-                 "minsplit"=   15,  #minima cantidad de registros en un nodo para hacer el split
-                 "minbucket"=   5,  #minima cantidad de registros en una hoja
-                 "maxdepth"=   10 ) #profundidad máxima del arbol
+paramB  <- list( "cp"=          -1,  #complejidad minima
+                 "minsplit"=   400,  #minima cantidad de registros en un nodo para hacer el split
+                 "minbucket"=  900,  #minima cantidad de registros en una hoja
+                 "maxdepth"=   5 ) #profundidad máxima del arbol
 
 paramC  <- list( "cp"=         -1,  #complejidad minima
-                 "minsplit"=   50,  #minima cantidad de registros en un nodo para hacer el split
-                 "minbucket"=  16,  #minima cantidad de registros en una hoja
-                 "maxdepth"=    6 ) #profundidad máxima del arbol
+                 "minsplit"=   400,  #minima cantidad de registros en un nodo para hacer el split
+                 "minbucket"=  100,  #minima cantidad de registros en una hoja
+                 "maxdepth"=    5 ) #profundidad máxima del arbol
 
 
 #calculo el vector de 5 ganancias de cada uno de los param

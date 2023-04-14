@@ -8,7 +8,7 @@ require("data.table")
 require("rpart")
 require("parallel")
 
-ksemillas  <- c(102191, 200177, 410551, 552581, 892237) #reemplazar por las propias semillas
+ksemillas  <- c( 771349, 771359, 771389, 771401, 771403 ) #reemplazar por las propias semillas
 
 #------------------------------------------------------------------------------
 #particionar agrega una columna llamada fold a un dataset que consiste en una particion estratificada segun agrupa
@@ -16,15 +16,17 @@ ksemillas  <- c(102191, 200177, 410551, 552581, 892237) #reemplazar por las prop
 
 particionar  <- function( data,  division, agrupa="",  campo="fold", start=1, seed=NA )
 {
+  # Set the random seed if it is not NA
   if( !is.na(seed) )   set.seed( seed )
-
+  
+  # Create a vector of fold numbers, e.g., c(1, 1, 2, 2, 3, 3, 4, 4, 5, 5)
   bloque  <- unlist( mapply(  function(x,y) { rep( y, x )} ,   division,  seq( from=start, length.out=length(division) )  ) )  
-
+  
+  # Randomly sample from the vector of fold numbers, and assign to the fold column
   data[ , (campo) :=  sample( rep( bloque, ceiling(.N/length(bloque))) )[1:.N],
           by= agrupa ]
 }
 #------------------------------------------------------------------------------
-
 ArbolEstimarGanancia  <- function( semilla, param_basicos )
 {
   #particiono estratificadamente el dataset
@@ -34,7 +36,9 @@ ArbolEstimarGanancia  <- function( semilla, param_basicos )
   modelo  <- rpart("clase_ternaria ~ .",     #quiero predecir clase_ternaria a partir del resto
                    data= dataset[ fold==1],  #fold==1  es training,  el 70% de los datos
                    xval= 0,
-                   control= param_basicos )  #aqui van los parametros del arbol
+                   control= param_basicos,
+                   parms = list(split = "information") 
+                   )  #aqui van los parametros del arbol
 
   #aplico el modelo a los datos de testing
   prediccion  <- predict( modelo,   #el modelo que genere recien
@@ -75,7 +79,7 @@ ArbolesMontecarlo  <- function( semillas, param_basicos )
 #------------------------------------------------------------------------------
 
 #Aqui se debe poner la carpeta de la computadora local
-setwd("X:\\gdrive\\austral2023v\\")   #Establezco el Working Directory
+setwd("C:\\Users\\marco\\Dropbox\\Austral\\labo12023")   #Establezco el Working Directory
 #cargo los datos
 
 #cargo los datos
@@ -83,11 +87,12 @@ dataset  <- fread("./datasets/dataset_pequeno.csv")
 
 #trabajo solo con los datos con clase, es decir 202107
 dataset  <- dataset[ clase_ternaria!= "" ]
-
+#Binarizando
+#dataset <- dataset[, clase_ternaria := ifelse(clase_ternaria != "BAJA+2", "NO_ENVIAR", clase_ternaria)]
 #genero el archivo para Kaggle
 #creo la carpeta donde va el experimento
 # HT  representa  Hiperparameter Tuning
-dir.create( "./exp/",  showWarnings = FALSE ) 
+#dir.create( "./exp/",  showWarnings = FALSE ) 
 dir.create( "./exp/HT2020/", showWarnings = FALSE )
 archivo_salida  <- "./exp/HT2020/gridsearch.txt"
 
@@ -96,22 +101,27 @@ archivo_salida  <- "./exp/HT2020/gridsearch.txt"
 #la forma que no suceda lo anterior es con append=TRUE
 cat( file=archivo_salida,
      sep= "",
+     "cp", "\t",
      "max_depth", "\t",
      "min_split", "\t",
+     "min_bucket", "\t",
      "ganancia_promedio", "\n")
 
 
 #itero por los loops anidados para cada hiperparametro
 
-for( vmax_depth  in  c( 4, 6, 8, 10, 12, 14 )  )
+for( vcp  in  c(-1)  )
 {
-for( vmin_split  in  c( 1000, 800, 600, 400, 200, 100, 50, 20, 10 )  )
+for( vmax_depth  in  c(5, 6)  )
 {
-
+for( vmin_split  in  c(650,600,550))
+{
+for( minbucket  in  c(as.integer(vmin_split/4),as.integer(vmin_split/3), as.integer(vmin_split/2)))
+{
   #notar como se agrega
-  param_basicos  <- list( "cp"=         -0.5,       #complejidad minima
+  param_basicos  <- list( "cp"=         vcp,       #complejidad minima
                           "minsplit"=  vmin_split,  #minima cantidad de registros en un nodo para hacer el split
-                          "minbucket"=  5,          #minima cantidad de registros en una hoja
+                          "minbucket"=  minbucket,          #minima cantidad de registros en una hoja
                           "maxdepth"=  vmax_depth ) #profundidad máxima del arbol
 
   #Un solo llamado, con la semilla 17
@@ -121,9 +131,14 @@ for( vmin_split  in  c( 1000, 800, 600, 400, 200, 100, 50, 20, 10 )  )
   cat(  file=archivo_salida,
         append= TRUE,
         sep= "",
-        vmax_depth, "\t",
+        vcp, "\t",
         vmin_split, "\t",
+        vmax_depth, "\t",
+        minbucket, "\t",
         ganancia_promedio, "\n"  )
 
 }
 }
+}
+}
+
