@@ -11,14 +11,14 @@ require("rpart")
 
 #parmatros experimento
 PARAM <- list()
-PARAM$experimento  <- 3210
-PARAM$semilla  <- 102191      #Establezco la semilla aleatoria, cambiar por SU primer semilla
+PARAM$experimento  <- 18042023
+PARAM$semilla  <- 771349      #Establezco la semilla aleatoria, cambiar por SU primer semilla
 
 #parameetros rpart
 PARAM$rpart_param   <- list( "cp"=          -1,
-                              "minsplit"=  300,
-                              "minbucket"=  20,
-                              "maxdepth"=   10 )
+                              "minsplit"=  250,
+                              "minbucket"=  50,
+                              "maxdepth"=   10)
 
 #parametros  arbol
 PARAM$feature_fraction  <- 0.5  #entreno cada arbol con solo 50% de las variables variables
@@ -29,7 +29,7 @@ PARAM$num_trees_max  <- 500 #voy a generar 500 arboles, a mas arboles mas tiempo
 #------------------------------------------------------------------------------
 #Aqui comienza el programa
 
-setwd("X:\\gdrive\\austral2023v\\")  #Establezco el Working Directory
+setwd("C:\\Users\\marco\\Dropbox\\Austral\\labo12023") #Establezco el Working Directory
 
 #cargo los datos
 dataset  <- fread("./datasets/dataset_pequeno.csv")
