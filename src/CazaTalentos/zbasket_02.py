@@ -33,6 +33,4 @@ for i in range(10000): #diez mil experimentos
     primero_ganador += 1
 
 
-
-
 print(primero_ganador)

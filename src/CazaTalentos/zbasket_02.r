@@ -1,5 +1,4 @@
 
-
 set.seed( 102191 )
 
 #calcula cuantos encestes logra un jugador con indice de enceste prob
@@ -13,13 +12,10 @@ ftirar  <- function( prob, qty ){
 #defino los jugadores
 mejor      <- 0.7
 peloton    <- ( 501:599 ) / 1000
-jugadores  <- c( mejor, peloton )
+jugadores  <- c( +mejor, peloton )
 
 #veo que tiene el vector
 jugadores
-
-
-
 
 #hago que los 100 jugadores tiren 10 veces cada uno
 mapply( ftirar, jugadores, 10 )

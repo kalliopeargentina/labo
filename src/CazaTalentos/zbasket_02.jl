@@ -31,8 +31,9 @@ for i = 1:10000  #diez mil experimentos
   mejor = findmax( vaciertos )
 
   if mejor[2] == 1
-      primero_ganador += 1
+    primero_ganador += 1
   end
 end
 
 print( primero_ganador )
+
