@@ -31,8 +31,8 @@ dapply  <- dataset[ foto_mes == 202109 ]
 #genero el modelo de Random Forest con la libreria ranger
 #notar como la suma de muchos arboles contrarresta el efecto de min.node.size=1
 param  <- list( "num.trees"=       500,  #cantidad de arboles
-                "mtry"=             50,  #cantidad de variables que evalua para hacer un split  sqrt(ncol(dtrain))
-                "min.node.size"=  10 00,  #tamaño minimo de las hojas
+                "mtry"=             30,  #cantidad de variables que evalua para hacer un split  sqrt(ncol(dtrain))
+                "min.node.size"=   500,  #tamaño minimo de las hojas
                 "max.depth"=        10   # 0 significa profundidad infinita
               )
 
@@ -49,8 +49,12 @@ modelo  <- ranger( formula= "clase_ternaria ~ .",
                    mtry=          param$mtry,
                    min.node.size= param$min.node.size,
                    max.depth=     param$max.depth
-                   #,class.weights= c( 1,40, 1)  #servira cambiar los pesos ?
+                  ,class.weights= c(0,1, 40, 1)  #servira cambiar los pesos ?
                  )
+
+
+
+unique(dtrain$clase_ternaria)
 
 #aplico el modelo recien creado a los datos del futuro
 prediccion  <- predict( modelo, dapply )
