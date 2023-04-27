@@ -50,11 +50,11 @@ PARAM$Tendencias2$ratiomax  <- FALSE
 
 PARAM$RandomForest$run  <- TRUE
 PARAM$RandomForest$num.trees  <- 40
-PARAM$RandomForest$max.depth  <-  5
+PARAM$RandomForest$max.depth  <-  6
 PARAM$RandomForest$min.node.size  <- 500
 PARAM$RandomForest$mtry  <- 15
 
-PARAM$CanaritosAsesinos  <- 5
+PARAM$CanaritosAsesinos  <- 1
 # FIN Parametros del script
 
 #------------------------------------------------------------------------------
