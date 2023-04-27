@@ -157,7 +157,7 @@ for( campo in  campos_buenos )
       abline(v=c(i), col=c("red"), lty=c(1), lwd=c(1))
     }
   }
-}
+} 
 
 dev.off()
 
