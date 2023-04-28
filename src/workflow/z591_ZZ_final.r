@@ -19,8 +19,8 @@ PARAM  <- list()
 PARAM$experimento  <- "ZZ5910"
 PARAM$exp_input  <- "HT5510"
 
-PARAM$modelos  <- 2       #aumentar si se quieren mas modelos
-PARAM$semilla  <- 102191
+PARAM$modelos  <- 4       #aumentar si se quieren mas modelos
+PARAM$semilla  <- 771349
 
 PARAM$envios_desde  <-  7000
 PARAM$envios_hasta  <- 13000
