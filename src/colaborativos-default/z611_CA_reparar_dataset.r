@@ -4,7 +4,7 @@
 #Necesita para correr en Google Cloud
 #  32 GB de memoria RAM
 #   8 vCPU
-
+  
 
 #limpio la memoria
 rm( list= ls(all.names= TRUE) )  #remove all objects
