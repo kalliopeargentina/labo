@@ -22,9 +22,9 @@ require("lightgbm")
 
 #Parametros del script
 PARAM  <- list()
-PARAM$experimento <- "07_R_FE_Ex30Var"
+PARAM$experimento <- "07_E_FE_UmbSigma1Neg"
 
-PARAM$exp_input  <- "07_R_DR_Ex30Var"
+PARAM$exp_input  <- "07_E_DR_UmbSigma1Neg"
 
 PARAM$lag1  <- TRUE
 PARAM$lag2  <- TRUE
@@ -324,7 +324,7 @@ CanaritosAsesinos  <- function( canaritos_ratio=0.2 )
 
   GVEZ  <<- GVEZ + 1
 
-  umbral  <- tb_importancia[ Feature %like% "canarito", median(pos) + 2*sd(pos) ]  #Atencion corto en la mediana mas DOS desvios!!
+  umbral  <- tb_importancia[ Feature %like% "canarito", median(pos) - 1*sd(pos) ]  #Atencion corto en la mediana mas DOS desvios!!
 
   col_utiles  <- tb_importancia[ pos < umbral & !( Feature %like% "canarito"),  Feature ]
   col_utiles  <-  unique( c( col_utiles,  c("numero_de_cliente","foto_mes","clase_ternaria","mes") ) )

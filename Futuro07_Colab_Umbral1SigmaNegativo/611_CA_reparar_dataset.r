@@ -13,9 +13,9 @@ gc( full= TRUE )                 #garbage collection
 require("data.table")
 require("yaml")
 
-#Parametros del script
+#Parametros del script 
 PARAM  <- list()
-PARAM$experimento  <- "07_R_CA_Ex30Var"
+PARAM$experimento  <- "07_E_CA_UmbSigma1Neg"
 PARAM$dataset  <- "./datasets/competencia_2023.csv.gz"
 
 PARAM$metodo  <- "MachineLearning"     #valores posibles  "MachineLearning"  "EstadisticaClasica" "Ninguno"
