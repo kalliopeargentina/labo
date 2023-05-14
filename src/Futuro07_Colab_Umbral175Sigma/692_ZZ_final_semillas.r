@@ -31,8 +31,8 @@ require("lightgbm")
 
 #Parametros del script
 PARAM  <- list()
-PARAM$experimento  <- "07_E_ZZ_UmbSigma05Neg"
-PARAM$exp_input  <- "07_E_HT_UmbSigma05Neg"
+PARAM$experimento  <- "07_E_ZZ_UmbSigma175"
+PARAM$exp_input  <- "07_E_HT_UmbSigma175"
 
 #Atencion, que se procesan 5 modelos y cada uno con 5 semillas, ajuste a SUS necesidades
 PARAM$modelos_rank  <- c(1)  #Que modelos quiero, segun su posicion en el ranking
