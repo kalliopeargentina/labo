@@ -51,9 +51,9 @@ PARAM$Tendencias2$ratiomax  <- FALSE
 
 PARAM$RandomForest$run  <- TRUE
 PARAM$RandomForest$num.trees  <- 20
-PARAM$RandomForest$max.depth  <-  4
+PARAM$RandomForest$max.depth  <-  40
 PARAM$RandomForest$min.node.size  <- 1000
-PARAM$RandomForest$mtry  <- 40
+PARAM$RandomForest$mtry  <- 10
 PARAM$RandomForest$semilla  <- 102191    # cambiar por la propia semilla
 
 PARAM$CanaritosAsesinos$ratio  <- 0.0        #varia de 0.0 a 2.0, si es 0.0 NO se activan
