@@ -31,9 +31,9 @@ PARAM$train$validation   <- c( 202106 )
 PARAM$train$testing      <- c( 202107 )
 
 # Atencion  0.4  de  undersampling de la clase mayoritaria,  los CONTINUA
-PARAM$train$undersampling  <- 0.4   # 1.0 significa NO undersampling ,  0.1  es quedarse con el 10% de los CONTINUA
+PARAM$train$undersampling  <- 0.3   # 1.0 significa NO undersampling ,  0.1  es quedarse con el 10% de los CONTINUA
 
-PARAM$train$semilla  <- 102191  # cambiar por su propia semilla  !!!
+PARAM$train$semilla  <- 771349   # cambiar por su propia semilla  !!!
 
 PARAM$home  <- "~/buckets/b1/"
 # FIN Parametros del script
