@@ -36,7 +36,7 @@ PARAM$exp_input  <- "HT7510"
 
 #Atencion, que cada modelos se procesa con 5 semillas, ajuste a SUS necesidades
 PARAM$modelos_rank  <- c( 1 )  #Que modelos quiero, segun su posicion en el ranking e la Bayesian Optimizacion, ordenado por ganancia descendente
-PARAM$semillas  <- c( 102191, 200177, 410551, 552581, 892237 ) #reemplazar por las propias semillas
+PARAM$semillas  <- c( 771349, 771359, 771389, 771401, 771403 ) #reemplazar por las propias semillas
 
 PARAM$kaggle$envios_desde  <-  8000L
 PARAM$kaggle$envios_hasta  <- 13500L
